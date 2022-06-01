@@ -59,7 +59,7 @@ window.addEventListener('load', function(){
             }else{
                 this.speed = 0;
             }
-            
+
             if( input.keys.indexOf('ArrowUp') > -1 && this.onGround() ){
                 this.vy -= 30;
             }
@@ -83,7 +83,27 @@ window.addEventListener('load', function(){
         }
     }
 
-    class Background{}
+    class Background{
+        constructor( gameWidth, gameHeight ){
+             this.gameHeight = gameWidth;
+             this.gameHeight = gameHeight;
+             this.image = document.getElementById('backgroundImage');
+             this.x = 0;
+             this.y = 0;
+             this.width = 2400;
+             this.height = 720;
+             this.speed = 20;
+        }
+        draw(context){
+            // continious loop
+            context.drawImage(this.image, this.x, this.y, this.width, this.height);
+            context.drawImage(this.image, this.x + this.width, this.y, this.width, this.height);
+        }
+        update(){
+            this.x -= this.speed;
+            if( this.x < 0 - this.width ) this.x = 0;
+        }
+    }
 
     class Enemy{}
     
@@ -93,12 +113,17 @@ window.addEventListener('load', function(){
 
     const input = new InputHandler();
     const player = new Player( canvas.width, canvas.height );
-    player.draw(ctx);
+    const background = new Background( canvas.width, canvas.height );
 
     function animate(){
         ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        background.draw(ctx);
+        background.update();
+
         player.draw(ctx);
         player.update( input );
+
         requestAnimationFrame(animate);
     }
 
