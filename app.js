@@ -97,7 +97,7 @@ window.addEventListener('load', function(){
         draw(context){
             // continious loop
             context.drawImage(this.image, this.x, this.y, this.width, this.height);
-            context.drawImage(this.image, this.x + this.width, this.y, this.width, this.height);
+            context.drawImage(this.image, this.x + this.width - this.speed, this.y, this.width, this.height);
         }
         update(){
             this.x -= this.speed;
@@ -119,7 +119,7 @@ window.addEventListener('load', function(){
         ctx.clearRect(0, 0, canvas.width, canvas.height);
 
         background.draw(ctx);
-        background.update();
+        // background.update();
 
         player.draw(ctx);
         player.update( input );
