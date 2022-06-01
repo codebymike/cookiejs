@@ -10,6 +10,7 @@ window.addEventListener('load', function(){
             window.addEventListener('keydown', e => {
                 if( (e.key === 'ArrowDown' || e.key === 'ArrowUp' || e.key === 'ArrowLeft' || e.key === 'ArrowRight' ) && this.keys.indexOf(e.key) === -1 ){
                     this.keys.push(e.key)
+                    console.log(this.keys);
                 }
             });
             window.addEventListener('keyup', e => {
@@ -55,10 +56,12 @@ window.addEventListener('load', function(){
                 this.speed = 5;
             }else if( input.keys.indexOf('ArrowLeft') > -1 ){
                 this.speed = -5;
-            }else if( input.keys.indexOf('ArrowUp') > -1 && this.onGround() ){
-                this.vy -= 30;
             }else{
                 this.speed = 0;
+            }
+            
+            if( input.keys.indexOf('ArrowUp') > -1 && this.onGround() ){
+                this.vy -= 30;
             }
             // h
             this.x += this.speed;
