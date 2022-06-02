@@ -1,5 +1,6 @@
 window.addEventListener('load', function(){
     const canvas = document.getElementById('canvas1');
+    const fullScreenButton = document.getElementById('fullScreenButton');
     const ctx = canvas.getContext('2d');
     canvas.width = 1400;
     canvas.height = 720;
@@ -251,6 +252,16 @@ window.addEventListener('load', function(){
         gameOver = false;
         animate(0);
     }
+
+    function toggleFullScreen(){
+        if( !document.fullscreenElement ){
+            canvas.requestFullscreen().catch( err => alert(`Error: ${err.message}`));
+        }else{
+            document.exitFullscreen();
+        }
+    }
+
+    fullScreenButton.addEventListener('click', toggleFullScreen);
 
     const input = new InputHandler();
     const player = new Player( canvas.width, canvas.height );
