@@ -10,6 +10,8 @@ window.addEventListener('load', function(){
     class InputHandler{
         constructor(){
             this.keys = [];
+            this.touchY = '';
+            this.touchThreshold = 30;
             window.addEventListener('keydown', e => {
                 if( (e.key === 'ArrowDown' || e.key === 'ArrowUp' || e.key === 'ArrowLeft' || e.key === 'ArrowRight' ) && this.keys.indexOf(e.key) === -1 ){
                     this.keys.push(e.key)
@@ -23,6 +25,22 @@ window.addEventListener('load', function(){
                 if( e.key === 'ArrowDown' || e.key === 'ArrowUp' || e.key === 'ArrowLeft' || e.key === 'ArrowRight' ){
                     this.keys.splice(this.keys.indexOf(e.key), 1);
                 }
+            });
+            // touch
+            window.addEventListener('touchstart', e => {
+                this.touchY = e.changedTouches[0].pageY;
+            });
+            window.addEventListener('touchmove', e => {
+                const swipeDistance = e.changedTouches[0].pageY - this.touchY;
+                if( swipeDistance < -this.touchThreshold && this.keys.indexOf('swipe up') === -1 ) this.keys.push('swipe up');
+                else if( swipeDistance > this.touchThreshold && this.keys.indexOf('swipe down') === -1 ){
+                    this.keys.push('swipe down');
+                    if( gameOver ) restartGame();
+                }
+            });
+            window.addEventListener('touchend', e => {
+                this.keys.splice(this.keys.indexOf('swipe up'), 1);
+                this.keys.splice(this.keys.indexOf('swipe down'), 1);
             });
         }
     }
@@ -96,7 +114,7 @@ window.addEventListener('load', function(){
                 this.speed = 0;
             }
 
-            if( input.keys.indexOf('ArrowUp') > -1 && this.onGround() ){
+            if( (input.keys.indexOf('ArrowUp') > -1 || input.keys.indexOf('swipe up') > -1) && this.onGround() ){
                 this.vy -= 30;
             }
             // horz movement
@@ -221,7 +239,7 @@ window.addEventListener('load', function(){
         if( gameOver ){
             context.textAlign = 'center';
             context.fillStyle = 'black';
-            context.fillText('Game Over, press Enter to restart', canvas.width/2, 200);
+            context.fillText('Game Over, press Enter or Swipe Down to restart', canvas.width/2, 200);
         }
     }
 
