@@ -6,3 +6,6 @@
 - Touch controls
 - Framerate control
 - Fullscreen
+
+## Art
+Assets by https://bevouliin.com/
